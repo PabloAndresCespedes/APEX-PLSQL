@@ -1,0 +1,8 @@
+SELECT S.SEGMENT_NAME tabla,
+       round( SUM(BYTES)/1024/1024/1024, 4) GB
+FROM DBA_SEGMENTS S
+WHERE S.SEGMENT_NAME = upper('NOMBRE_DE_TU_TABLA')
+and   s.owner = 'ADCS'
+and   s.segment_type = 'TABLE'
+GROUP BY S.SEGMENT_NAME,
+         S.SEGMENT_TYPE;
