@@ -24,7 +24,7 @@ from v$sql b, v$session a
 where a.status = 'ACTIVE'
 and a.sql_address = b.address(+)
 AND a.username IS NOT NULL
-AND trunc(a.last_call_et/60) > 2
+AND trunc(a.last_call_et/60) > 1
 ORDER BY minutos DESC, segundos desc;
 
 --- opcion dos: @APeralta
@@ -48,3 +48,6 @@ select lock1.sid ID_BLOQUEADOR,
    and lock1.sid = s.SID
    AND LOCK1.SID = C.SESSION_ID(+)
    AND C.OBJECT_ID = D.OBJECT_ID(+)
+
+-- opcion tres: @JorgeV
+select * from v$locked_object v, all_objects u where v.OBJECT_ID=u.OBJECT_ID and u.OWNER = 'ADCS';
