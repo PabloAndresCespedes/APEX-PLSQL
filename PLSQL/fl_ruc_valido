@@ -1,0 +1,63 @@
+CREATE OR REPLACE FUNCTION FL_RUC_VALIDO(P_NUMERO IN VARCHAR2) RETURN BOOLEAN IS
+
+  /* Calcula Digito Verificador num?rico con entrada alfanum?rica y basemax 11 */
+
+  P_BASEMAX    NUMBER DEFAULT 11;
+  V_TOTAL      NUMBER(6);
+  V_RESTO      NUMBER(2);
+  K            NUMBER(2);
+  V_NUMERO_AUX NUMBER(1);
+  V_NUMERO_AL  VARCHAR2(255);
+  V_CARACTER   VARCHAR2(1);
+  V_DIGIT      NUMBER;
+  V_ULTIMO_NRO NUMBER(1);
+  V_NUMERO     VARCHAR2(10);
+BEGIN
+  IF (UPPER(SUBSTR(P_NUMERO, 1, 3)) = 'CI:') THEN
+    --si se ingres? nro.cedula en vez de RUC
+    RETURN TRUE;
+  ELSIF (INSTR(P_NUMERO, '-') <> (LENGTH(P_NUMERO) - 1)) THEN
+    --Si el pen?ltimo caracter no es un gui?n, o si hay un gui?n en otra posici?n que no sea la pen?ltima, el RUC es falso
+    RETURN FALSE;
+  ELSE
+    V_ULTIMO_NRO := SUBSTR(P_NUMERO, LENGTH(P_NUMERO), 1); --Guardo el ?ltimo n?mero para compararlo despues con el c?lculo de verificaci?n
+    V_NUMERO     := SUBSTR(P_NUMERO, 1, LENGTH(P_NUMERO) - 2); --Saco el qui?n y el DV
+    -- Cambia la ultima letra por ascii en caso que la cedula termine en letra
+    FOR I IN 1 .. LENGTH(V_NUMERO) LOOP
+      V_CARACTER := UPPER(SUBSTR(V_NUMERO, I, 1));
+      IF ASCII(V_CARACTER) NOT BETWEEN 48 AND 57 THEN
+        -- de 0 a 9
+        V_NUMERO_AL := V_NUMERO_AL || ASCII(V_CARACTER);
+      ELSE
+        V_NUMERO_AL := V_NUMERO_AL || V_CARACTER;
+      END IF;
+    END LOOP;
+
+    -- Calcula el DV
+    K       := 2;
+    V_TOTAL := 0;
+    FOR I IN REVERSE 1 .. LENGTH(V_NUMERO_AL) LOOP
+      IF K > P_BASEMAX THEN
+        K := 2;
+      END IF;
+      V_NUMERO_AUX := TO_NUMBER(SUBSTR(V_NUMERO_AL, I, 1));
+      V_TOTAL      := V_TOTAL + (V_NUMERO_AUX * K);
+      K            := K + 1;
+    END LOOP;
+    V_RESTO := MOD(V_TOTAL, 11);
+    IF V_RESTO > 1 THEN
+      V_DIGIT := 11 - V_RESTO;
+    ELSE
+      V_DIGIT := 0;
+    END IF;
+    IF V_ULTIMO_NRO = V_DIGIT THEN
+      --comparo el ?ltimo n?mero con el c?lculo de verificaci?n
+      RETURN TRUE;
+    ELSE
+      RETURN FALSE;
+    END IF;
+  END IF;
+EXCEPTION
+  WHEN OTHERS THEN
+    RETURN FALSE;
+END;

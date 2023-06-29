@@ -1,9 +1,9 @@
-<br>Accionar<br/><input type="checkbox" style="transform:scale(1.2);" onclick="javascript:$f_CheckAll(this, this.checked, $('[name=f01]'));">
+<br>Acción<br/><input type="checkbox" class="boxes cursor" style="transform:scale(1.2);" onclick="javascript:$f_CheckAll(this, this.checked, $('[name=f01]'));">
 
 ```
 APEX_ITEM.CHECKBOX2(P_IDX        => 1,
                            P_VALUE      => FCON_CLAVE,
-                           P_ATTRIBUTES => 'class="boxes"') HABILITAR
+                           P_ATTRIBUTES => 'class="boxes cursor" style="transform:scale(1.2);"') HABILITAR
 ```
 
 ```
