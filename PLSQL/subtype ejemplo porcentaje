@@ -1,0 +1,16 @@
+-- declaración en forma global publica el subtipo con rango de 0 a 100. 
+-- la documentacion informa que RANGE solo puede ser aplicado en pls_integer y sus subtipos.
+subtype porc_dto_type is pls_integer range 0..100;
+
+-- si el valor no se encuentra en el rango obtendremos el error: [ORA-06502: PL/SQL: numeric or value error]
+<<test_range>>
+declare
+    l_test     porc_dto_type;
+    e_no_range exception;
+    pragma     exception_init(e_no_range, -06502);
+begin
+    l_test := 101; -- desencadenar error
+exception
+    when e_no_range then
+      raise_application_error(-20000, 'Dato fuera de rango!' );
+end test_range;

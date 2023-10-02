@@ -1,0 +1,50 @@
+function sql_metodos_oc return varchar2 is
+    /**
+     @PabloACespedes 04/09/2023 07:29
+     Ejemplo de como utilizar el tipo tabla con un index en varchar2
+     retornando una sentencia SQL para una lista de valores de tipos de facturación
+    */
+    k_enter           char             := chr(13);
+    k_metodo_fact_dir varchar2(2 char) := 'FD';
+    k_metodo_fact_dir varchar2(3 char) := 'POC';
+
+    -- declaramos un sub tipo de tipo varchar que será nuestro indice de busqueda
+    subtype id_vc_type is varchar2( 64 char );
+    
+    -- establacemos el tipo tabla a ser utilizado en las variables
+    type d_t is table of varchar2(255 char)  
+    index by id_vc_type;    
+    
+    -- utilizamos la tabla para declarar nuestra variable
+    d_rt  d_t;      
+
+    -- para alojar el registro dentro del buque vamos a utilizar una variable del tipo de tabla 
+    r     id_vc_type;
+
+    -- para el primer elemento, ya que la logica del ejemplo evalua esto para contruir la sentencia
+    f     id_vc_type;
+    
+    -- aqui vamos a alojar la sentencia SQL para completar con los datos del tipo tabla
+    l_result varchar2( 32767 char);
+  begin
+    d_rt(k_metodo_fact_dir)  := 'Facturaci'||chr(243)||'n Directa';
+    d_rt(k_metodo_pre_oc)    := 'Pre Orden de Carga';
+    
+    r := d_rt.first;
+    f := r;
+    
+    <<w_build_query>>
+    while r is not null loop
+      if f = r then
+        l_result := 'select '''|| d_rt(r) ||''' d, ''' || r ||''' r from dual '||k_enter;
+      else
+        l_result := l_result || 'union all '|| k_enter ||'select '''|| d_rt(r) ||''' d, ''' || r ||''' r from dual ';
+      end if;
+      
+      r := d_rt.next(r);
+      
+    end loop w_build_query;
+    
+    return l_result;
+    
+  end sql_metodos_oc;

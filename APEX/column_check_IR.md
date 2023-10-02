@@ -14,3 +14,32 @@ FOR I IN 1 .. APEX_APPLICATION.G_F01.COUNT LOOP
     (APEX_APPLICATION.G_F01(I));
 END LOOP;
 ```
+
+$('[name=f01]').each( function () {
+   if (this.checked) {
+     l_cont = ( l_cont + 1 );
+       
+     let seqId = $(this).val();
+       
+       apex.server.process('remArtSinExistencia',
+          {
+              x01: seqId
+          }
+          , {success: function(pData){
+                  if (pData.ind_error == 1){
+                      showSweet({msg:pData.error});
+                  }else{ 
+                      apex.region('listado').refresh();
+                  }
+              }
+          }
+      );
+   }
+});
+
+if (l_cont == 0){
+    const MSG_SELECCION = 'Es necesario seleccionar un registro para remover de la lista';
+    showSweet({msg: MSG_SELECCION});
+}else{
+    apex.region('regExistDep').refresh();
+}
