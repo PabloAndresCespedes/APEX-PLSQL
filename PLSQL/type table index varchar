@@ -48,3 +48,36 @@ function sql_metodos_oc return varchar2 is
     return l_result;
     
   end sql_metodos_oc;
+
+  ----------------------- otro ejemplo de index en varchar2
+  -- Created on 03/10/2023 by @PabloACespedes 
+declare
+  subtype index_t is varchar2(1 char);
+  
+  type lista_estado_tab is table of varchar2(255 char) index by index_t;
+  
+  l_estados lista_estado_tab;
+  l_index   index_t;
+  t_lista   apex_t_varchar2;
+begin
+  t_lista        := apex_t_varchar2();
+  
+  -- Regla: INDEX va la abreviatura del estado, luego el VALOR va la descripcion del estado
+  l_estados('P') := 'Pendiente';
+  l_estados('A') := 'Aprobado';
+  l_estados('R') := 'Rechazado';
+  l_estados('E') := 'Eximido';
+  
+  l_index := l_estados.first;
+  
+  <<w_registros>>
+  while l_index is not null
+  loop
+    apex_string.push(p_table => t_lista, p_value => l_index||':'||l_estados(l_index));
+    
+    l_index := l_estados.next(l_index);
+    
+  end loop w_registros;
+  
+  dbms_output.put_line(apex_string.join(p_table => t_lista, p_sep => '^'));
+end;
