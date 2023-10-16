@@ -1,0 +1,13 @@
+se=select * from
+sef=select * from fin_documento f where f.doc_clave =
+sed=select distinct 1 into l_dummy
+xo=delete from
+wo=when others then
+wnf=when no_data_found then
+bd=Default\bloqueDeclare.tpl
+er=Error handling\Raise_application_error.tpl
+nvx=Default\nvx.tpl
+initcol=Default\iniciarColeccionesAPEX.tpl
+ij=inner join 
+lj=left join
+rj=right join

@@ -16,9 +16,7 @@ select distinct
  a.client_info,
  a.client_identifier,
  a.state,
- a.osuser,
- a.client_info,
- a.MODULE
+ a.osuser
  --b.sql_fulltext
 from v$sql b, v$session a
 where a.status = 'ACTIVE'
