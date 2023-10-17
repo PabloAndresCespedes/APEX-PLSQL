@@ -7,6 +7,11 @@ APEX_ITEM.CHECKBOX2(P_IDX        => 1,
 ```
 
 ```
+<input type="checkbox" name="f01" value="1" class="boxes cursor" style="transform:scale(1.2);" />
+```
+
+
+```
 FOR I IN 1 .. APEX_APPLICATION.G_F01.COUNT LOOP
     INSERT INTO TABLA
     (DATO_CHECK)
