@@ -19,7 +19,7 @@ FOR I IN 1 .. APEX_APPLICATION.G_F01.COUNT LOOP
     (APEX_APPLICATION.G_F01(I));
 END LOOP;
 ```
-
+```
 $('[name=f01]').each( function () {
    if (this.checked) {
      l_cont = ( l_cont + 1 );
@@ -41,10 +41,13 @@ $('[name=f01]').each( function () {
       );
    }
 });
+```
 
+```
 if (l_cont == 0){
     const MSG_SELECCION = 'Es necesario seleccionar un registro para remover de la lista';
     showSweet({msg: MSG_SELECCION});
 }else{
     apex.region('regExistDep').refresh();
 }
+```
