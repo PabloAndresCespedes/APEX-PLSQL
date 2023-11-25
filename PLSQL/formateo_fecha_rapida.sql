@@ -62,6 +62,6 @@
         when others then
             apex_json.open_object;
                 apex_json.write(p_name => 'ind_error', p_value=> 1);
-                apex_json.write(p_name => 'mensaje', p_value=> replace( replace(sqlerrm, 'ORA-20000:',''), 'ORA-01847:', '' ));
+                apex_json.write(p_name => 'mensaje', p_value=> regexp_replace(sqlerrm, 'ORA-[0-9]+: '));
             apex_json.close_object;
     end;
