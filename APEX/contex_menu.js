@@ -1,9 +1,10 @@
 /**
- * Referencia de Paulo Augusto Künzel
- * https://www.linkedin.com/pulse/oracle-apex-context-menu-paulo-augusto-k%C3%BCnzel/
- * Todo el crédito es para él.
+ * Referencia de Philipp Hartenfeller y Paulo Augusto Künzel
+ * Paulo: https://lct.software/blog/oracle-apex-context-menus
+ * Philipp: https://www.linkedin.com/pulse/oracle-apex-context-menu-paulo-augusto-k%C3%BCnzel/
+ * Todos los créditos son para ellos
  * Ejemplo para el uso de un menú contextual en Oracle APEX
- * Inicializar dentro de un load
+ * Inicializar dentro de una accion dinamica load
  * La region a utilizar tiene que tener el ID regResultados
  * La columna que se usará para obtener el ID tiene que tener el header ID
  */
@@ -25,17 +26,13 @@ const menuItemsHistorial = [
     type: 'action',
     label: 'Ver detalle',
     icon: 'fa-search',
-    action: () => {
-      $s('P154_DET_CAB', `${clickedHistorial}`)
-    },
+    action: () => $s('P154_DET_CAB', `${clickedHistorial}`),
   },
   {
     type: 'action',
     label: 'Imprimir Resumen',
     icon: 'fa-print',
-    action: () => {
-      $s('P154_IMPRIMIR_PEDIDO', `${clickedHistorial}`)
-    },
+    action: () => $s('P154_IMPRIMIR_PEDIDO', `${clickedHistorial}`),
   },
 ];
 
