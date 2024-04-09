@@ -44,3 +44,14 @@ function templateHeader(){
 apex.jQuery( '#' + REG_DET_SOL_LISTA ).on( "apexafterrefresh", function() {
     $('#report_table_' + REG_DET_SOL_LISTA + ' > thead').html((index,currentcontent) => templateHeader() + currentcontent);
 });
+
+
+/// version 3
+/// la idea es tener una region con ID regListaExclusionCopia
+/// luego buscamos la clase de la tabla y al iniciar el primer elemento le agregamos la cabecera
+$('#regListaExclusionCopia_content').find('.a-IRR-table').prepend(templateHeader());
+
+/// version 4
+/// aqui utilizamos HTML en funcion, dentro de i el index, pero en e esta el elemento completo del selector
+// retornamos el template y el elemento pero con el template al inicio
+$(this.affectedElements).find('.a-IRR-table > tr').html(function(i, e){ return `${templ}${e}` } );
