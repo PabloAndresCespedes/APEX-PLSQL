@@ -23,5 +23,12 @@
         content: 'Cambiar Estado',
         animation: 'fade',
         });
+
+        // Esto es para obtenera el valor del atributo title del span
+        tippy('.btnCambioEstado', {
+        content: (reference) => reference.getAttribute('title'),
+        animation: 'fade',
+        });
+
      ```
  6. Ya que necesitamos un refresh, se utiliza un método LazyLoad para la región, luego de cargar la página establecemos el refresh.
