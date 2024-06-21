@@ -1,0 +1,14 @@
+/*
+* permite establecer puntos suspensivos pasando cierto ancho establecido
+  Declarar a nivel de columna, Expresion HTML
+  <span class="ellipsis">#OBSERVACION#<span>
+
+  Utilizar la clase de forma global
+*/
+span.ellipsis {
+    width: 350px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
