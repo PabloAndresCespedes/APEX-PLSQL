@@ -1,0 +1,13 @@
+{
+  "name": "PWA Simux Carga mercaderias",
+  "short_name": "SIMUX Carga Mercaderias",
+  "start_url": "/ords/f?p=105:1",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff",
+  "theme_color": "#3f51b5",
+  "description": "PWA Simux Carga de mercaderias, creado por Pablo A. Céspedes [Campo 9]",
+  "dir": "pyg",
+  "lang": "es-ES",
+  "gcm_sender_id": "105"
+}
