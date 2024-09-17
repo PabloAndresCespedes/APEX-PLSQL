@@ -38,9 +38,9 @@ begin
     bulk collect into l_lista_stock_wms
     limit k_limit;
     
-    exit when l_lista_stock_wms.count = 0;
-    
     print(l_lista_stock_wms.count);
+
+    exit when l_lista_stock_wms.count <> k_limit;
     
   end loop;
   
