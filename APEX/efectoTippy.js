@@ -1,3 +1,7 @@
+/**
+ * @PabloACespedes 
+ * Se crea para aplicar el efecto de la libreria de tooltip
+ */
 const TIPPY_CLASS = 'tippyMsg';
 
 apex.jQuery(window).on('theme42ready', function() {
@@ -26,3 +30,4 @@ function aplicarTippy({selector}){
         arrow: true
     });
 }
+
