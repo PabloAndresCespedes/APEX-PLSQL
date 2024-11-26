@@ -22,7 +22,7 @@ from v$sql b, v$session a
 where a.status = 'ACTIVE'
 and a.sql_address = b.address(+)
 AND a.username IS NOT NULL
-AND trunc(a.last_call_et/60) > 1
+AND trunc(a.last_call_et/60) >= 1
 ORDER BY minutos DESC, segundos desc;
 
 --- opcion dos: @APeralta

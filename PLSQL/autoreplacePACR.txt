@@ -11,3 +11,5 @@ initcol=Default\iniciarColeccionesAPEX.tpl
 ij=inner join
 lj=left join
 rj=right join
+pp=procedure pp_
+ff=function fp_
