@@ -1,0 +1,82 @@
+-- Created on 07/02/2025 by @PabloACespedes 
+declare 
+  k_iniciar_cronometro   constant varchar2( 7 char ) := 'INICIAR';
+  k_finalizar_cronometro constant varchar2( 9 char ) := 'FINALIZAR';
+  
+  g_log_inicio                    number;
+  g_log_fin                       number;
+  g_msg                           clob;
+  
+  --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  --== Constructor para cronometro
+    procedure set_msg(
+      in_msg in varchar2
+    )as
+    begin
+       dbms_lob.append(g_msg, in_msg || '<br>');
+    end set_msg;
+    
+    function get_msg return clob
+      is
+    begin
+       return g_msg;
+    end get_msg;
+    
+  --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  --== Cronometro de tiempos de ejecuci�n, medimos el inicio
+  --   versus el fin para luego obtener la cantidad de 
+  --   segundos
+    procedure pp_cronometro(
+      in_bloque in varchar2 := null
+    , in_opcion in varchar2
+    )as
+      k_mask_date constant varchar2( 21 char ) := 'dd/mm/yyyy hh24:mi:ss';
+    begin
+      
+      <<c_opcion_cronometro>>
+      case
+        when in_opcion = k_iniciar_cronometro   then
+          set_msg('<hr>');
+          set_msg(in_bloque);
+          g_log_inicio := dbms_utility.get_time;
+          set_msg('Inicio: '|| to_char(sysdate, k_mask_date));
+          
+        when in_opcion = k_finalizar_cronometro then
+          g_log_fin    := dbms_utility.get_time;
+          set_msg('Fin: '   || to_char(sysdate, k_mask_date)                        );
+          set_msg('Lapso: ' || round( (g_log_fin - g_log_inicio)/100, 2 ) ||' seg'  );
+  
+      else
+        null;
+      end case c_opcion_cronometro;
+    end pp_cronometro;
+  --^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+begin
+  dbms_lob.createtemporary(g_msg, true);
+  
+  <<bloq_uno>>
+  begin
+    pp_cronometro(in_bloque => 'bloq_uno', in_opcion => k_iniciar_cronometro);
+    dbms_lock.sleep(seconds => 1);
+    pp_cronometro(in_opcion => k_finalizar_cronometro);
+  end bloq_uno;
+  
+  <<bloq_dos>>
+  begin
+    pp_cronometro(in_bloque => 'bloq_dos', in_opcion => k_iniciar_cronometro);
+    dbms_lock.sleep(seconds => 2.4);
+    pp_cronometro(in_opcion => k_finalizar_cronometro);
+  end bloq_dos;
+  
+  <<bloq_tres>>
+  begin
+    pp_cronometro(in_bloque => 'bloq_tres', in_opcion => k_iniciar_cronometro);
+    dbms_lock.sleep(seconds => 2);
+    pp_cronometro(in_opcion => k_finalizar_cronometro);
+  end bloq_tres;
+  
+  print( get_msg );
+  
+  dbms_lob.freetemporary(g_msg);
+  
+end;
