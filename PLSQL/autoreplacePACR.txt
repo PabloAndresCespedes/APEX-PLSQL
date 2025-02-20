@@ -8,6 +8,7 @@ bd=Default\bloqueDeclare.tpl
 er=Error handling\Raise_application_error.tpl
 nvll=Default\nvx.tpl
 initcol=Default\iniciarColeccionesAPEX.tpl
+vala=Default\Val Assert.tpl
 ij=inner join
 lj=left join
 rj=right join
