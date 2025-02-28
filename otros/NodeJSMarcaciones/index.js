@@ -1,8 +1,8 @@
-const express = require('express');
-const axios = require('axios');
-const cron = require('node-cron');
-const app = express();
-const port = 2700;
+const express = require( 'express'   );
+const axios   = require( 'axios'     );
+const cron    = require( 'node-cron' );
+const app     = express();
+const port    = 2700;
 
 app.use(express.json()); // Middleware para parsear JSON en el body de las peticiones
 
