@@ -1,3 +1,10 @@
+/*
+  @PabloACespedes 04/03/2025
+    Explicación abreviatura para tipos de datos (Estandar QuickSQL)
+      - num  es number
+      - vcN  es varchar2(N). Ej: vc255 significa varchar2(255)
+      - date es date
+*/
 bapp_empresa -- Entidad que aloja las empresas que utilizan la aplicacion Bigon 2.0
   bemp_cod          num   -- Codigo interno de la empresa en el ERP
   bemp_razon_social vc255 -- Razon social de la empresa
@@ -15,7 +22,11 @@ bapp_moneda -- Entidad que aloja las monedas habilitadas por empresa
   bmon_dig_agrup     vc2  -- Digito de agrupacion de miles. Ej "." para "1.000.000"
   bmon_dig_dec       vc2  -- Digito de division de decimales. Ej "," para "1.505,35"
 
-bapp_sucursal
+bapp_empr_conf -- Entidad de configuraciones generales a nivel de empresa
+  bcem_emp        num -- Ref. BAPP_EMPRESA.BEMP_COD
+  bcem_moneda_loc num -- Moneda local de la empresa. Ref. BAPP_MONEDA.BMON_COD
+
+bapp_sucursal -- Entidad que lista las diferentes sucursales por empresa
   bsuc_empr          num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
   bsuc_cod           num   -- Codigo interno de la sucursal a nivel de ERP
   bsuc_razon_social  vc255 -- Razon social
@@ -26,7 +37,7 @@ bapp_holding -- Entidad que lista los holding de clientes, es una alternativa pa
   bhol_empr     num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
   bhol_cod      num   -- Codigo unico del holding a nivel de empresa en el ERP
   bhol_desc     vc255 -- Descripcion o nombre de identificacion
-  bhol_mon      num   -- Moneda base del holding y sus clientes. Codigo de la vista BAPP_MONEDA.BMON_COD a nivel del ERP
+  bhol_moneda   num   -- Moneda base del holding y sus clientes. Codigo de la vista BAPP_MONEDA.BMON_COD a nivel del ERP
 
 bapp_cliente -- Entidad que lista los clientes por empresa
   bcl_empr         num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
@@ -37,11 +48,12 @@ bapp_cliente -- Entidad que lista los clientes por empresa
   bcl_apellido     vc255 -- Apellido del propietario
   bcl_ruc          vc50  -- Registro Unico del Contribuyente. Debe incluir el DV
   bcl_ci           vc50  -- Cedula de identidad. Debe incluir la serie en caso de contener
-  bcl_mon          num   -- Moneda base del cliente. Pero es prioridad tomar del holding
+  bcl_moneda       num   -- Moneda base del cliente. Pero es prioridad tomar del holding
+  bcl_estado       vc10  -- A: Activo I: Inactivo
 
 bapp_cliente_suc -- Entidad que lista las sucursales del cliente por empresa
   bcls_cli_empr     num    -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
-  bcls_cli_suc      num    -- Codigo de la vista BAPP_SUCURSAL.BSUC_COD a nivel de ERP
+  bcls_cli_suc      num    -- Ref. BAPP_SUCURSAL.BSUC_COD
   bcls_cli_cod      num    -- Codigo de la vista BAPP_CLIENTE.BCL_COD  a nivel de ERP
   bcls_gps_lat      num    -- GPS Latitud
   bcls_gps_lon      num    -- GPS Longitud
@@ -65,13 +77,85 @@ bapp_limite_credito -- Alojaremos los limites de credito por holding y cliente e
   blim_empr    num -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
   blim_holding num -- Codigo de la vista BAPP_HOLDING.BHOL_COD a nivel de ERP
   blim_cli_cod num -- En el caso que no tenga holding relacionamos por el cliente. Ref. BAPP_CLIENTE.BCL_COD
-  blim_mon     num -- Ref. BAPP_MONEDA.BMON_COD
+  blim_moneda  num -- Ref. BAPP_MONEDA.BMON_COD
   blim_monto   num -- Monto del limite de credito segun moneda
   
 bapp_cotizacion -- Entidad que aloja las cotizaciones de los ultimos 15 dias (5 dias atras y 10 dias en adelante)
   bcot_empr   num  -- Ref. BAPP_EMPRESA.BEMP_COD
-  bcot_mon    num  -- Ref. BAPP_MONEDA.BMON_COD
+  bcot_moneda num  -- Ref. BAPP_MONEDA.BMON_COD
   bcot_fecha  date -- Fecha truncada de cotizacion (Debe ser unica por empresa y moneda)
   bcot_compra num  -- Monto de compra en moneda local
   bcot_venta  num  -- Monto de venta en moneda local
-  
+
+bapp_vendedor -- Entidad que aloja la lista de vendedores habilitados por empresa
+  bven_empr          num   -- Ref. BAPP_EMPRESA.BEMP_COD
+  bven_cod           num   -- Codigo interno del vendedor
+  bven_nom           vc255 -- Nombre del vendedor
+  bven_ape           vc255 -- Apellido del vendedor
+  bven_doc_ident     vc50  -- Documento de identidad del vendedor
+  bven_estado        vc10  -- A: Activo o I: Inactivo
+  bven_monto_min_vta num   -- Monto minimo para ingreso de pedidos en moneda local de la empresa
+
+bapp_vendedor_suc -- Entidad que lista las sucursales habilitadas para el vendedor. Pueden haber excepciones, donde un vendedor tenga mas de una suc asignada
+  bves_empr     num  -- Ref. BAPP_EMPRESA.BEMP_COD
+  bves_vendedor num  -- Ref. BAPP_VENDEDOR.BVEN_COD
+  bves_suc      num  -- Ref. BAPP_SUCURSAL.BSUC_COD
+
+bapp_vendedor_cli -- Entidad que lista los clientes para el vendedor
+  bvec_empr     num -- Ref. BAPP_EMPRESA.BEMP_COD
+  bvec_vendedor num -- Ref. BAPP_VENDEDOR.BVEN_COD
+  bvec_suc      num -- Ref. BAPP_SUCURSAL.BSUC_COD
+  bven_cli      num -- Ref. BAPP_CLIENTE.BCL_COD
+
+bapp_dia -- Entidad libreria de uso general para lista de dias
+  bdia_cod  num  -- Codigo del dia en numero (0) domingo (6) sabado
+  bdia_desc vc50 -- Nombre descriptivo del dia
+
+bapp_periodo_visita_cli -- Entidad que establece los dias de visita al cliente
+  bpvc_empr         num -- Ref. BAPP_EMPRESA.BEMP_COD
+  bpvc_cli          num -- Ref. BAPP_CLIENTE.BCL_COD
+  bpvc_dia          num -- Ref. BAPP_DIA.BDIA_COD. Numero del dia de visita
+  bpvc_ind_quincena vc1 -- S:Si o N: No. Indica si es en quincena
+  bpvc_ind_par      vc1 -- P: par o I: impar. Indica si es una visita semanal/quincenal en par o impar
+
+bapp_autoriza_especial -- Entidad que lista las autorizaciones especiales para clientes
+  baue_empr            num -- Ref. BAPP_EMPRESA.BEMP_COD
+  baue_cli             num -- Ref. BAPP_CLIENTE.BCL_COD
+  baue_moneda          num -- Ref. BAPP_MONEDA.BMON_COD
+  baue_monto           num -- Monto de la autorizacion especial en la moneda correspondiente
+  baue_max_dias_atraso num -- Total maximo de los dias de atraso para utilizar esta autorizacion especial
+
+bapp_impuesto -- Entidad que aloja los impuestos habilitados en la empresa
+  bimp_empr     num   -- Ref. BAPP_EMPRESA.BEMP_COD
+  bimp_cod      num   -- Codigo interno del impuesto
+  bimp_desc     vc50  -- Nombre descriptivo del impuesto
+  bimp_porc     num   -- Porcentaje del impuesto. De 0 a 100
+  bimp_base_imp num   -- Base imponible del impuesto sobre el articulo. De 0 a 100
+
+bapp_articulo -- Entidad que aloja la lista de articulos o productos de la empresa
+  bart_empr          num   -- Ref. BAPP_EMPRESA.BEMP_COD
+  bart_cod           num   -- Codigo interno del articulo
+  bart_desc          vc255 -- Nombre descriptivo del articulo
+  bart_peso_kg       num   -- Peso bruto incluido el embalaje
+  bart_impuesto      num   -- Ref. BAPP_IMPUESTO.BIMP_COD
+
+bapp_cod_barra -- Lista de codigos de barra del articulo
+  bcob_empr   num  -- Ref. BAPP_EMPRESA.BEMP_COD
+  bcob_art    num  -- Ref. BAPP_ARTICULO.BART_COD
+  bcod_tipo   vc5  -- EAN, DUN, INTERNO
+  bcod_codigo vc50 -- Codigo de barra
+  bcod_cant   num  -- Cantidad del articulo en el paquete
+
+bapp_lista_precio -- Entidad que aloja las listas de precios por Empresa/sucursa/moneda
+  blip_empr   num   -- Ref. BAPP_EMPRESA.BEMP_COD
+  blip_suc    num   -- Ref. BAPP_SUCURSAL.BSUC_COD
+  blip_cod    num   -- Codigo interno de la lista de precio
+  blip_nro    num   -- Numero interno de referencia
+  blip_desc   vc255 -- Nombre descriptivo de la lista
+  blip_moneda num   -- Ref. BAPP_MONEDA.BMON_COD
+
+bapp_lista_precio_det -- Entidad que lista el precio de venta por Lista de Precio Cabecera
+  blid_empr   num -- Ref. BAPP_EMPRESA.BEMP_COD
+  blid_lista  num -- Ref. BAPP_LISTA_PRECIO.BLIP_COD Cabecera
+  blid_art    num -- Ref. BAPP_ARTICULO.BART_COD
+  blid_precio num -- Monto del precio de venta
