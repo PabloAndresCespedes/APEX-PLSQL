@@ -1,0 +1,77 @@
+bapp_empresa -- Entidad que aloja las empresas que utilizan la aplicacion Bigon 2.0
+  bemp_cod          num   -- Codigo interno de la empresa en el ERP
+  bemp_razon_social vc255 -- Razon social de la empresa
+  bemp_ruc          vc50  -- Registro Unico del Contribuyente (Empresarial)
+  bemp_explotacion  vc255 -- Explotacion(es) de la empresa
+  bemp_dir          vc255 -- Direccion fisica de la Casa Matriz
+  bemp_tel          vc50  -- Telefono de contacto general
+
+bapp_moneda -- Entidad que aloja las monedas habilitadas por empresa
+  bmon_empr          num  -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  bmon_cod           num  -- Codigo interno de la moneda en el ERP
+  bmon_desc          vc50 -- Descripcion del nombre de la moneda
+  bmon_dec           num  -- Cantidad de decimales para redondeo
+  bmon_iso           vc5  -- ISO 4217 codigo de 3 letras para monedas
+  bmon_dig_agrup     vc2  -- Digito de agrupacion de miles. Ej "." para "1.000.000"
+  bmon_dig_dec       vc2  -- Digito de division de decimales. Ej "," para "1.505,35"
+
+bapp_sucursal
+  bsuc_empr          num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  bsuc_cod           num   -- Codigo interno de la sucursal a nivel de ERP
+  bsuc_razon_social  vc255 -- Razon social
+  bsuc_dir           vc255 -- Direccion fisica de la sucursal
+  bsuc_tel           vc50  -- Telefono de contacto
+
+bapp_holding -- Entidad que lista los holding de clientes, es una alternativa para administrar clientes con el mismo RUC, de forma general
+  bhol_empr     num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  bhol_cod      num   -- Codigo unico del holding a nivel de empresa en el ERP
+  bhol_desc     vc255 -- Descripcion o nombre de identificacion
+  bhol_mon      num   -- Moneda base del holding y sus clientes. Codigo de la vista BAPP_MONEDA.BMON_COD a nivel del ERP
+
+bapp_cliente -- Entidad que lista los clientes por empresa
+  bcl_empr         num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  bcl_cod          num   -- Codigo interno del cliente en el ERP
+  bcl_holding      num   -- Codigo de la vista BAPP_HOLDING.BHOL_COD a nivel de ERP
+  bcl_razon_social vc255 -- Razon social estipulado por la SET
+  bcl_nombre       vc255 -- Nombre del propietario
+  bcl_apellido     vc255 -- Apellido del propietario
+  bcl_ruc          vc50  -- Registro Unico del Contribuyente. Debe incluir el DV
+  bcl_ci           vc50  -- Cedula de identidad. Debe incluir la serie en caso de contener
+  bcl_mon          num   -- Moneda base del cliente. Pero es prioridad tomar del holding
+
+bapp_cliente_suc -- Entidad que lista las sucursales del cliente por empresa
+  bcls_cli_empr     num    -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  bcls_cli_suc      num    -- Codigo de la vista BAPP_SUCURSAL.BSUC_COD a nivel de ERP
+  bcls_cli_cod      num    -- Codigo de la vista BAPP_CLIENTE.BCL_COD  a nivel de ERP
+  bcls_gps_lat      num    -- GPS Latitud
+  bcls_gps_lon      num    -- GPS Longitud
+  bcls_gps_alt      num    -- GPS Altitud
+
+bapp_tipo_mov -- Entidad que aloja los tipos de movimientos habilitados por empresa
+  btmv_empr         num   -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  btmv_cod          num   -- Codigo interno del tipo de movimiento en el ERP
+  btmv_desc         vc255 -- Nombre descriptivo del tipo de movimiento
+  btmv_ind_ent_sal  vc1   -- Indica si es un tipo de movimiento de entrada (E) o salida (S). Ej. Nota credito (SALIDA) Factura Contado (Entrada)
+  btmv_ind_tipo_cot vc1   -- Indica el tipo de cotizacion a utilizar para moneda extranjera (C: compra V: Venta)
+  
+bapp_tipo_mov_conf -- Entidad que indica cuales son las codigos de tipos de movimiento en la empresa. Vista BAPP_TIPO_MOV.BTM_COD
+  btmc_empr      num -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  btmc_fact_cont num -- TMV Factura contado emitida 
+  btmc_fact_cre  num -- TMV Factura credito emitida 
+  btmc_rec_emit  num -- TMV Recibo emitido          
+  btmc_not_cre   num -- TMV Nota de credito emitida
+  
+bapp_limite_credito -- Alojaremos los limites de credito por holding y cliente en la empresa
+  blim_empr    num -- Codigo de la vista BAPP_EMPRESA.BEMP_COD a nivel de ERP
+  blim_holding num -- Codigo de la vista BAPP_HOLDING.BHOL_COD a nivel de ERP
+  blim_cli_cod num -- En el caso que no tenga holding relacionamos por el cliente. Ref. BAPP_CLIENTE.BCL_COD
+  blim_mon     num -- Ref. BAPP_MONEDA.BMON_COD
+  blim_monto   num -- Monto del limite de credito segun moneda
+  
+bapp_cotizacion -- Entidad que aloja las cotizaciones de los ultimos 15 dias (5 dias atras y 10 dias en adelante)
+  bcot_empr   num  -- Ref. BAPP_EMPRESA.BEMP_COD
+  bcot_mon    num  -- Ref. BAPP_MONEDA.BMON_COD
+  bcot_fecha  date -- Fecha truncada de cotizacion (Debe ser unica por empresa y moneda)
+  bcot_compra num  -- Monto de compra en moneda local
+  bcot_venta  num  -- Monto de venta en moneda local
+  

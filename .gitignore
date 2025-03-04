@@ -1,0 +1,9 @@
+node_modules
+*.bat
+*.zip
+*.sso
+*.p12
+*.pem
+*.jks
+*.properties
+*.ora

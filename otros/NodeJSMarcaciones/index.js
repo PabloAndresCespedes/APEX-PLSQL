@@ -65,7 +65,7 @@ const l_doc_ci = 5253581; // Número de cedula del colaborador
         },
         SABADO: {
             DIURNO_ENTRADA     : '59 6 * * *'  , // 06:59
-            DIURNO_SALIDA      : '07 12 * * *' , // 12:07
+            DIURNO_SALIDA      : '01 12 * * *' , // 12:01
             VESPERTINO_ENTRADA : '52 12 * * *' , // 12:52
             VESPERTINO_SALIDA  : '00 17 * * *' , // 17:00
         }
