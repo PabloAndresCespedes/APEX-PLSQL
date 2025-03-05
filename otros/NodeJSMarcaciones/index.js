@@ -46,7 +46,7 @@ const l_doc_ci = 5253581; // Número de cedula del colaborador
             VESPERTINO_SALIDA  : '01 17 * * *' , // 17:01
         },
         MIERCOLES: {
-            DIURNO_ENTRADA     : '59 6 * * *'  , // 06:59
+            DIURNO_ENTRADA     : '57 6 * * *'  , // 06:57
             DIURNO_SALIDA      : '05 12 * * *' , // 12:05
             VESPERTINO_ENTRADA : '57 12 * * *' , // 12:57
             VESPERTINO_SALIDA  : '15 17 * * *' , // 17:15
@@ -64,7 +64,7 @@ const l_doc_ci = 5253581; // Número de cedula del colaborador
             VESPERTINO_SALIDA  : '01 17 * * *' , // 17:03
         },
         SABADO: {
-            DIURNO_ENTRADA     : '59 6 * * *'  , // 06:59
+            DIURNO_ENTRADA     : '58 6 * * *'  , // 06:58
             DIURNO_SALIDA      : '01 12 * * *' , // 12:01
             VESPERTINO_ENTRADA : '52 12 * * *' , // 12:52
             VESPERTINO_SALIDA  : '00 17 * * *' , // 17:00
