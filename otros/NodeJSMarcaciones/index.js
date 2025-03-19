@@ -49,13 +49,13 @@ const l_doc_ci = 5253581; // Número de cedula del colaborador
             DIURNO_ENTRADA     : '57 6 * * *'  , // 06:57
             DIURNO_SALIDA      : '05 12 * * *' , // 12:02
             VESPERTINO_ENTRADA : '57 12 * * *' , // 12:57
-            VESPERTINO_SALIDA  : '15 17 * * *' , // 17:15
+            VESPERTINO_SALIDA  : '02 17 * * *' , // 17:15
         },
         JUEVES: {
             DIURNO_ENTRADA     : '55 6 * * *'  , // 06:55
             DIURNO_SALIDA      : '03 12 * * *' , // 12:03
             VESPERTINO_ENTRADA : '52 12 * * *' , // 12:52
-            VESPERTINO_SALIDA  : '01 17 * * *' , // 17:01
+            VESPERTINO_SALIDA  : '00 17 * * *' , // 17:01
         },
         VIERNES: {
             DIURNO_ENTRADA     : '55 6 * * *'  , // 06:55
